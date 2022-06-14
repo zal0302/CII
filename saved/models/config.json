@@ -1,0 +1,96 @@
+{
+    "name": "CII",
+    "n_gpu": 1,
+    "arch": {
+        "type": "CII",
+        "args": {
+            "base": "resnet50",
+            "convert": [
+                64,
+                256,
+                512,
+                1024,
+                2048
+            ],
+            "center": 64,
+            "topdown": [
+                [
+                    true,
+                    true,
+                    true,
+                    true,
+                    false
+                ],
+                [
+                    true,
+                    true,
+                    true,
+                    true,
+                    false
+                ]
+            ],
+            "score": 64,
+            "pretrained": "pretrained/resnet50-19c8e357.pth"
+        }
+    },
+    "data_loader": {
+        "type": "SodDataLoader",
+        "args": {
+            "data_dir": "./data/DUTS-TR",
+            "data_list": "./data/DUTS-TR/train_pair.lst",
+            "batch_size": 30,
+            "image_size": 352,
+            "shuffle": true,
+            "validation_split": 0.0,
+            "num_workers": 8
+        }
+    },
+    "optimizer": {
+        "type": "SGD",
+        "args": {
+            "lr": 0.05,
+            "momentum": 0.9,
+            "weight_decay": 0.0005,
+            "nesterov": true
+        }
+    },
+    "loss": [
+        "bce_loss",
+        "iou_loss"
+    ],
+    "metrics": [
+        "MAE",
+        "Smeasure"
+    ],
+    "lr_scheduler": {
+        "type": "cosine",
+        "args": {
+            "step_size": 27
+        }
+    },
+    "trainer": {
+        "epochs": 32,
+        "warmup_epochs": 8,
+        "iter_size": 1,
+        "log_step": 200,
+
+        "save_dir": "saved/",
+        "save_period": 9,
+        "verbosity": 2,
+        
+        "monitor": "off",
+        "early_stop": 0,
+
+        "tensorboard": false
+    },
+    "test": {
+        "dataset": [
+            "ECSSD",
+            "PASCAL-S",
+            "DUT-OMRON",
+            "HKU-IS",
+            "SOD",
+            "DUTS-TE"
+        ]
+    }
+}
