@@ -1,6 +1,6 @@
 ## Rethinking the U-shape Structure for Salient Object Detection
 
-### This is a PyTorch implementation of our TIP 2021 [paper](https://mftp.mmcheng.net/Papers/21TIP-CII.pdf).
+### This the official PyTorch implementation of our TIP 2021 [paper](https://mftp.mmcheng.net/Papers/21TIP-CII.pdf).
 
 ## Prerequisites
 
