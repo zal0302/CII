@@ -25,8 +25,6 @@ Download the following [datasets for testing](https://drive.google.com/file/d/1j
 
 Download the following pre-trained model for [CII](https://drive.google.com/file/d/1JcePr4FwWMedhFHeClYF1v_MIYwJGOF0/view?usp=sharing) into `saved/models` folder. 
 
-Download the following pre-trained model for [backbone](https://drive.google.com/file/d/1zZJaB5-SnRuKuITmVkWNWQvRHJrOymmw/view?usp=sharing) into `pretrained` folder. 
-
 ### 4. Test
 
 For all datasets testing used in our paper
