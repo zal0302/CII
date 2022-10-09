@@ -4,20 +4,23 @@ import torch
 import numpy as np
 import torch.nn.functional as F
 
+
 def conv3x3(in_planes, out_planes, stride=1, groups=1, dilation=1):
     """3x3 convolution with padding"""
     return nn.Conv2d(in_planes, out_planes, kernel_size=3, stride=stride,
                      padding=dilation, groups=groups, bias=False, dilation=dilation)
 
+
 def conv1x1(in_planes, out_planes, stride=1):
     """1x1 convolution"""
     return nn.Conv2d(in_planes, out_planes, kernel_size=1, stride=stride, bias=False)
+
 
 class BasicBlock(nn.Module):
     expansion = 1
 
     def __init__(self, inplanes, planes, stride=1, downsample=None, groups=1,
-                 base_width=64, dilation=1, norm_layer=None):
+                 base_width=64, dilation=1, norm_layer=None, is_last=False):
         super(BasicBlock, self).__init__()
         if norm_layer is None:
             norm_layer = nn.BatchNorm2d
@@ -52,6 +55,7 @@ class BasicBlock(nn.Module):
 
         return out
 
+    
 class Bottleneck(nn.Module):
     # Bottleneck in torchvision places the stride for downsampling at 3x3 convolution(self.conv2)
     # while original implementation places the stride at the first 1x1 convolution(self.conv1)
@@ -104,6 +108,7 @@ class Bottleneck(nn.Module):
             return out, out_mid
         return out
 
+    
 class ResNet(nn.Module):
 
     def __init__(self, block, layers,
@@ -189,6 +194,7 @@ class ResNet(nn.Module):
     def forward(self, x):
         return self._forward_impl(x)
 
+    
 class Basic2(nn.Module):
     def __init__(self):
         super(Basic2,self).__init__()
@@ -201,6 +207,7 @@ class Basic2(nn.Module):
     def initialize(self):
         weight_init(self)
 
+        
 class RGC(nn.Module):
     def __init__(self, channel, ratio=4):
         super(RGC, self).__init__()
@@ -217,6 +224,7 @@ class RGC(nn.Module):
         
         return self.basic3(x2 * x1) 
 
+    
 class ResNet_locate(nn.Module):
     def __init__(self, block, layers, convert, center):
         super(ResNet_locate,self).__init__()
@@ -247,6 +255,12 @@ class ResNet_locate(nn.Module):
         
         return xls
 
+
 def resnet50_locate(convert, center):
     model = ResNet_locate(Bottleneck, [3, 4, 6, 3], convert, center)
+    return model
+
+
+def resnet18_locate(convert, center):
+    model = ResNet_locate(BasicBlock, [2, 2, 2, 2], convert, center)
     return model
