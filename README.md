@@ -45,7 +45,7 @@ All results saliency maps will be stored under `saved/results` folders in .png f
 
 You may refer to this repo for results evaluation: [SalMetric](https://github.com/Andrew-Qibin/SalMetric).
 
-We provide the [pre-computed saliency maps and evaluation results](https://drive.google.com/file/d/11Uj2-qNDyASrfvdXj2uE9Zm7xiYYwNEM/view?usp=sharing).
+We provide the pre-computed saliency maps and evaluation results for [ResNet50 backbone](https://drive.google.com/file/d/11Uj2-qNDyASrfvdXj2uE9Zm7xiYYwNEM/view?usp=sharing) and [ResNet18 backbone](https://drive.google.com/file/d/1Q53oKWTNA9KznWmbXGm2IhY_2yeYvF1E/view?usp=sharing).
 
 ### 6. Contact
 
