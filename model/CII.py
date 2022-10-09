@@ -5,7 +5,8 @@ import torch.nn.functional as F
 from base import BaseModel
 import math
 import numpy as np
-from .resnet import resnet50_locate 
+from .resnet import resnet50_locate, resnet18_locate 
+
 
 class TopDownLayer(nn.Module):
     def __init__(self, center, need_x2, need_fuse):
@@ -30,6 +31,7 @@ class TopDownLayer(nn.Module):
             resl = self.conv_sum_c(torch.add(resl, x2))
         return resl
 
+
 class ScoreLayer(nn.Module):
     def __init__(self, k):
         super(ScoreLayer, self).__init__()
@@ -41,14 +43,19 @@ class ScoreLayer(nn.Module):
             x = F.interpolate(x, x_size[2:], mode='bilinear', align_corners=True)
         return x
 
-class CII(BaseModel):
-    def __init__(self, base, convert, center, topdown, score, pretrained=None):
-        super(CII, self).__init__()
-        self.base = resnet50_locate(convert, center)
 
-        self.conv = nn.Sequential(nn.Conv2d(center, center, 3, 1, 1, bias=False), nn.BatchNorm2d(center), nn.ReLU(inplace=True))
-        self.conv_sum = nn.Sequential(nn.Conv2d(center, center, 3, 1, 1, bias=False), nn.BatchNorm2d(center))
-        self.conv_sum_c = nn.Sequential(nn.Conv2d(center, center, 1, 1, bias=False), nn.BatchNorm2d(center))
+class CII(BaseModel):
+    def __init__(self, base, convert, center, topdown, score):
+        super(CII, self).__init__()
+        
+        self.arch = base
+        if self.arch == "resnet50":
+            self.base = resnet50_locate(convert, center)
+            self.conv = nn.Sequential(nn.Conv2d(center, center, 3, 1, 1, bias=False), nn.BatchNorm2d(center), nn.ReLU(inplace=True))
+            self.conv_sum = nn.Sequential(nn.Conv2d(center, center, 3, 1, 1, bias=False), nn.BatchNorm2d(center))
+            self.conv_sum_c = nn.Sequential(nn.Conv2d(center, center, 1, 1, bias=False), nn.BatchNorm2d(center))
+        elif self.arch == "resnet18":
+            self.base = resnet18_locate(convert, center)
 
         self.topdown = nn.ModuleList()
         for i in range(len(topdown[0])):
@@ -69,17 +76,16 @@ class CII(BaseModel):
                 if m.bias is not None:
                     nn.init.zeros_(m.bias)
 
-        if pretrained is not None:
-            assert os.path.exists(pretrained), '{} does not exist.'.format(pretrained)
-            print("Loading pretrained parameters from {}.".format(pretrained))
-            self.base.load_pretrained_model(torch.load(pretrained))
-
     def forward(self, x):
         x_size = x.size()
         infos = self.base(x)
         infos = infos[::-1]
 
-        merge = self.conv_sum_c(self.conv_sum(self.conv(infos[0])))
+        if self.arch == "resnet50":
+            merge = self.conv_sum_c(self.conv_sum(self.conv(infos[0])))
+        elif self.arch == "resnet18":
+            merge = infos[0]
+
         for k in range(len(infos)-1):
             merge = self.topdown[k](merge, infos[k+1])
 
