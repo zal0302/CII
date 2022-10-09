@@ -23,14 +23,20 @@ Download the following [datasets for testing](https://drive.google.com/file/d/1j
 
 ### 3. Download the pre-trained models for CII and backbone
 
-Download the following pre-trained model for [CII](https://drive.google.com/file/d/1JcePr4FwWMedhFHeClYF1v_MIYwJGOF0/view?usp=sharing) into `saved/models` folder. 
+Download the following pre-trained models for [CII with ResNet50 backbone](https://drive.google.com/file/d/1JcePr4FwWMedhFHeClYF1v_MIYwJGOF0/view?usp=sharing) and [CII with ResNet18 backbone](https://drive.google.com/file/d/1DL860taDrmDUv-Am49AQZsdcF4Ey2-2t/view?usp=sharing) into `saved/models` folder. 
 
 ### 4. Test
 
-For all datasets testing used in our paper
+For all datasets testing used in our paper for ResNet50 backbone:
 
 ```shell
-python test.py -r saved/models/cii.pth
+python test.py -r saved/models/cii.pth -c saved/models/config.json
+```
+
+and for ResNet18 backbone:
+
+```shell
+python test.py -r saved/models/cii_res18.pth -c saved/models/config_resnet18.json
 ```
 
 All results saliency maps will be stored under `saved/results` folders in .png formats.
