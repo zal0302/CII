@@ -1,0 +1,72 @@
+{
+    "name": "CII_woflip",
+    "n_gpu": 1,
+    "arch": {
+        "type": "CII",
+        "args": {
+            "base": "resnet18",
+            "convert": [64,64,128,256,512],
+            "center": 64,
+            "topdown": [[true, true, true, true, false], [true, true, true, true, false]],
+            "score": 64
+        }
+    },
+    "data_loader": {
+        "type": "SodDataLoader",
+        "args":{
+            "data_dir": "/Data/SOD/DUTS/DUTS-TR",
+            "data_list": "/Data/SOD/DUTS/DUTS-TR/train_pair.lst",
+            "batch_size": 1,
+            "image_size": 352,
+            "shuffle": true,
+            "validation_split": 0.0,
+            "num_workers": 8
+        }
+    },
+    "optimizer": {
+        "type": "SGD",
+        "args":{
+            "lr": 5e-2,
+            "momentum": 0.9,
+            "weight_decay": 5e-4,
+            "nesterov": true
+        }
+    },
+    "loss": [
+        "bce_loss", "iou_loss"
+    ],
+    "metrics": [
+        "MAE", "Smeasure"
+    ],
+    "lr_scheduler": {
+        "type": "cosine",
+        "args": {
+            "step_size": 27
+        }
+    },
+    "trainer": {
+        "epochs": 32,
+        "warmup_epochs": 8,
+        "iter_size": 1,
+        "log_step": 200,
+
+        "save_dir": "saved/",
+        "save_period": 9,
+        "verbosity": 2,
+        
+        "monitor": "off",
+        "early_stop": 0,
+
+        "tensorboard": false
+    },
+    "test": {
+        "dataset": [
+            "ECSSD",
+            "PASCALS",
+            "DUTOMRON",
+            "HKU-IS",
+            "SOD",
+            "DUTS-TE"
+        ]
+    }
+}
