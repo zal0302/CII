@@ -65,3 +65,12 @@ If you have any questions, feel free to contact me via: `liuzhiang(at)mail.nanka
   publisher={IEEE}
 }
 ```
+```latex
+@article{liu2022poolnet+,
+  title={Poolnet+: Exploring the potential of pooling for salient object detection},
+  author={Liu, Jiang-Jiang and Hou, Qibin and Liu, Zhi-Ang and Cheng, Ming-Ming},
+  journal={IEEE Transactions on Pattern Analysis and Machine Intelligence},
+  year={2022},
+  publisher={IEEE}
+}
+```
